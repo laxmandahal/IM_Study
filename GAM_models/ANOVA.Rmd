@@ -1,0 +1,160 @@
+---
+title: "IM Study Linear Models"
+author: "Laxman Dahal"
+date: "02/26/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(dslabs)
+```
+
+
+
+```{r}
+dat = read.csv('Inputs_for_s4_96x48_veryhigh.csv', header = TRUE)
+magnitude = read.table('data/Magnitude.txt', header=FALSE)
+Rjb = read.table('data/Rjb.txt', header = FALSE)
+head(dat)
+```
+```{r}
+g_acc = 980.665 ## converts g to cm/s2
+lnEDP = as.matrix(log(dat['story_1_sdrX']))
+lnIM = as.matrix(log(dat['SaT1'])) *g_acc
+magnitude = as.matrix(magnitude)
+Rjb = as.matrix(Rjb)
+```
+
+```{r}
+
+```
+
+
+```{r}
+summary(aov(lnEDP~ lnIM + magnitude))
+```
+```{r}
+g = lm(lnEDP ~ lnIM)
+summary(g)
+```
+```{r}
+lnIM = as.matrix(log(dat['SaT1']))
+
+g = lm(lnEDP ~ lnIM + magnitude)
+summary(g)
+
+```
+
+The residual analysis look normal, nothing weird about the residual plot or the Q-Q plot.
+```{r}
+par(mfrow = c(1,2))
+plot(g, 1:2)
+```
+
+## b) 
+
+Computing mean values
+```{r}
+A1 = rep(rep(c(-1,1), c(1,1)), 4)
+B1 = rep(rep(c(-1,1), c(2,2)), 2)
+C1 = rep(rep(c(-1,1), c(4,4)), 1)
+ybar = apply(data[,5:12], 1, mean)
+ybar
+```
+computing standard deviation
+```{r}
+s2 = apply(data[,5:12], 1, var)
+std = sqrt(s2)
+std
+```
+```{r}
+g = lm(ybar ~ A1 * B1 * C1)
+summary(aov(g))
+```
+
+Based on the summary table below, I performed the ANOVA multiple times and found that A and B are significant at 5% level.
+
+The residual analysis indicate that the mean value differentiate themselves more on higher values than on the lower values. The QQ plots shows that the normality assumption is not valid.
+```{r}
+g = lm(ybar ~ A1 + B1 )#+ C1 )#+ A1:B1 + B1:C1 + A1:C1+ A1:B1:C1)
+summary(aov(g))
+par(mfrow = c(1,2))
+plot(g, 1:2)
+```
+```{r}
+g = lm(std ~ A1 * B1 * C1)
+summary(aov(g))
+```
+Based on the summary result above, I decided to only look at A and C. 
+```{r}
+g = lm(std ~ A1*C1 )#+ C1 )#+ A1:B1 + B1:C1 + A1:C1+ A1:B1:C1)
+summary(g)
+par(mfrow = c(1,2))
+plot(g, 1:2)
+```
+
+### b) - summary
+Using the mean values, it was found that the pan material (A) and stirring method(B) has a significant effect on the rank of the ratings. Using the standard deviation, it was found that interaction between pan material and brand of mix (AC interaction) has the biggest impact on the variability of the rating. 
+
+
+## c) 
+The second method is preferred because the estimate of error reflects the batch-to-batch variation. However, in the first method, since the ratings are simply a repeated observations by different testers on the same batch of brownies, it will be hard to quantify the difference between various batches. 
+
+
+
+# Problem 2. 
+```{r}
+data2 = read.table("http://www.stat.ucla.edu/~hqxu/stat201A/data/polymer.dat", header = TRUE)
+head(data2)
+```
+```{r}
+as.level2 = function(x){
+  y = rep(0, length(x))
+  y[x == "+"] = 1
+  y[x == "-"] = -1
+  y[x == 0 ] = 0
+  y
+}
+```
+
+
+```{r}
+A = as.level2(data2[1:16,3])
+B = as.level2(data2[1:16,4])
+C = as.level2(data2[1:16,5])
+D = as.level2(data2[1:16,6])
+y = as.vector(data2[1:16,7])
+y
+```
+
+Fitting the linear model with all the effects.
+```{r}
+model = lm(y ~ A * B * C * D)
+summary(aov(model))
+```
+```{r}
+source("http://www.stat.ucla.edu/~hqxu/stat201A/R/halfnormal.R")
+
+par(mfrow=c(1,2))
+normalplot(2*coef(model)[-1], l=T, n=5, ylim=c(-20, 25))
+halfnormalplot(2*coef(model)[-1], l=T, n=5)
+```
+## a) 
+Based on the half-normal plot as shown above, C, and A main effects and AB interaction effect appear to be the significant. 
+
+## b) 
+
+Data for the all 20 runs
+```{r}
+A = as.level2(data2[,3])
+B = as.level2(data2[,4])
+C = as.level2(data2[,5])
+D = as.level2(data2[,6])
+y = as.vector(data2[,7])
+y
+```

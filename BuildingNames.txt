@@ -1,0 +1,10 @@
+s1_48x32_high
+s1_48x32_veryhigh
+s1_96x48_high
+s1_96x48_veryhigh
+s2_48x32_high
+s2_48x32_veryhigh
+s2_96x48_high
+s2_96x48_veryhigh
+s4_96x48_high
+s4_96x48_veryhigh

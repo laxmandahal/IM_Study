@@ -1,0 +1,213 @@
+---
+title: "GAM_intro"
+author: "Laxman Dahal"
+date: "1/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+#library(dslabs)
+library(mgcv)
+```
+
+```{r}
+#dat = read.csv('Inputs_for_s4_96x48_veryhigh_pID1.csv', header = TRUE)
+dat = read.csv('Inputs_for_s2_48x32_high_avg_EDP.csv', header = TRUE)
+magnitude = read.table('data/Magnitude.txt', header=FALSE)
+Rjb = read.table('data/Distance_Rjb.txt', header = FALSE)
+columns = colnames(dat)
+head(dat)
+```
+
+
+```{r}
+ln_sdrX = as.matrix(log(dat['story_1_sdrX']))
+ln_pfaX = as.matrix(log(dat['story_1_pfaX']))
+
+######## The list of IMs used ##############
+lnsaT1 = as.matrix(log(dat['SaT1']))
+lnPGA = log(as.matrix(dat['PGA']))
+lnPGV = log(as.matrix(dat['PGV']))
+lnsaAvg = log(as.matrix(dat['Sa_avg']))
+lnCAV = log(as.matrix(dat['CAV']))
+lnSI = log(as.matrix(dat['SI']))
+lnASI = log(as.matrix(dat['ASI']))
+lnDSI = log(as.matrix(dat['DSI']))
+lnDS_5to75 = log(as.matrix(dat['DS_5to75']))
+lnDS_5to95 = log(as.matrix(dat['DS_5to75']))
+
+
+magnitude = as.matrix(magnitude)
+Rjb = as.matrix(log(Rjb))
+
+#df <- data.frame(SDR=ln_sdrX, PFA=ln_pfaX, SaT1=ln_saT1, SaAvg=ln_saAvg, magnitude=magnitude, 
+#                 distance = Rjb, PGV=lnPGV, PGA = lnPGA)
+#df
+```
+
+```{r}
+lnIM = lnsaT1
+
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
+                as.matrix(log(dat['story_2_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6)
+                ),
+                family = mvn(d = 8))
+summary(fit)
+```
+
+```{r}
+plot(fit)
+```
+
+
+```{r}
+
+fit <- gam(list(ln_sdrX  ~ s(ln_saT1, k=6) + s(magnitude, k = 6) + s(Rjb, k = 6), 
+                ln_pfaX ~ s(ln_saT1, k = 6) + s(magnitude, k = 6) + s(Rjb, k = 6)
+                ),
+                family = mvn(d = 2))
+summary(fit)
+```
+
+
+```{r}
+
+
+fit <- gam(list(ln_sdrX  ~ s(lnPGA, k=6) + s(magnitude, k = 6) + s(Rjb, k = 6), 
+                ln_pfaX ~ s(lnPGA, k = 6) + s(magnitude, k = 6) + s(Rjb, k = 6)),
+                family = mvn(d = 2))
+summary(fit)
+```
+
+```{r}
+
+
+fit <- gam(list(ln_sdrX  ~ s(lnPGV, k=6) + s(magnitude, k = 6) + s(Rjb, k = 6), 
+                ln_pfaX ~ s(lnPGV, k = 6) + s(magnitude, k = 6) + s(Rjb, k = 6)),
+                family = mvn(d = 2))
+summary(fit)
+```
+
+```{r}
+
+
+fit <- gam(list(ln_sdrX  ~ s(ln_saAvg, k=6) + s(magnitude, k = 6) + s(Rjb, k = 6), 
+                ln_pfaX ~ s(ln_saAvg, k = 6) + s(magnitude, k = 6) + s(Rjb, k = 6)),
+                family = mvn(d = 2))
+summary(fit)
+```
+
+
+
+
+```{r}
+fit$df.residual
+```
+
+```{r}
+#
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fit$family$data$R))
+cov
+```
+
+```{r}
+# correlation matrix between SDR and PFA
+cov2cor(cov)
+```
+
+
+
+
+
+```{r}
+fit$family$data
+```
+
+
+
+
+```{r}
+N <- 200
+I <- exp(rnorm(N, mean=0, sd=0.5))
+mag <- rnorm(N, mean=3, sd=0.5)
+log_acc <- I + rnorm(N, mean=1, sd=0.2)
+log_disp <- 2*I + rnorm(N, mean=1, sd=0.5) / mag
+df <- data.frame(log_acc=log_acc, log_disp=log_disp, I=I, mag=mag)
+df
+```
+
+```{r}
+
+library(mgcv)
+
+fit <- gam(list(log(log_disp)  ~ s(mag), log_acc ~ I + s(mag)),
+         data = df, family = mvn(d = 2))
+
+#fit <- gam(list(log_disp  ~ I + s(mag), log_acc ~ I + s(mag)),
+#         data = df, family = mvn(d = 2))
+summary(fit)
+
+plot(fit)
+```
+
+```{r}
+
+#library(mgcv)
+
+#fit <- gam(list(sdr  ~ I + s(mag) + s(Rjb), pfa ~ I + s(mag)) + s(Rjb),
+#         data = df, family = mvn(d = 2))
+#summary(fit)
+
+#plot(fit)
+```
+
+
+```{r}
+#
+# estimated cov matrix between log_acc and log_disp
+cov <- solve(crossprod(fit$family$data$R))
+cov
+```
+
+```{r}
+# correlation matrix between log_acc and log_disp
+cov2cor(cov)
+```
+
+
+```{r}
+coef(fit)
+```
+
+
+```{r}
+fit$family$data
+```
+
+```{r}
+fit$family$data
+```
+
+
+
+
+
+
+
+
+
+
+
+
