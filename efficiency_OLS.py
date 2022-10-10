@@ -61,7 +61,11 @@ class OLS:
             
     def qqplot(self):
         sm.qqplot(self.result.resid, line = 's')
-
+    
+    def get_pred_values(self):
+        return self.result.get_prediction().predicted_mean
+    def get_residual(self):
+        return self.result.resid
 
     def fitplot(self):
         sm.graphics.plot_fit(self.result, 1, vlines = False);
