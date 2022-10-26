@@ -13,6 +13,7 @@ def fit_against_IM_and_M(edp, IM, M):
     dummydf = pd.DataFrame(temp, index = None)
     model = smf.ols('lnEDP ~ lnSaT1 + M', data = dummydf)
     model_res = model.fit()
+    # model_res = model.fit(cov_type = 'hc0', optim_hessian = 'eim')
     return model_res
     
 def fit_against_IM_and_Rjb(edp, IM, Rjb):

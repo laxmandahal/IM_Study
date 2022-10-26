@@ -50,7 +50,7 @@ Rjb = as.matrix(log(Rjb))
 
 
 ```{r}
-lnIM = lnASI
+lnIM = lnsaT1
 
 fit <- gam(list(as.matrix(log(dat['story_1_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
                 as.matrix(log(dat['story_1_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
@@ -77,15 +77,42 @@ summary(fit)
 
 
 ```{r}
-fit$df.residual
+resid_gam = residuals.gam(fit)
+sd(resid_gam[,1])
+```
+```{r}
+sd(fitted.values(fit)[,1])
+```
+
+
+```{r}
+#anova.gam(fit)
+max(dat['story_1_sdrX'], dat['story_1_sdrZ'])
 ```
 
 ```{r}
 #
 # estimated cov matrix between SDR and PFA
 cov <- solve(crossprod(fit$family$data$R))
-cov
+
 ```
+```{r}
+sqrt(diag(cov))
+```
+
+```{r}
+std = sqrt(diag(cov))
+
+sdr_std = std[c(TRUE, TRUE, FALSE, FALSE)]
+pfa_std = std[c(FALSE, FALSE, TRUE, TRUE)]
+```
+
+```{r}
+mean(sdr_std)
+mean(pfa_std)
+```
+
+
 
 ```{r}
 # correlation matrix between SDR and PFA
@@ -94,7 +121,7 @@ cov2cor(cov)
 
 
 ```{r}
-coef(fit)
+#coef(fit)
 ```
 
 

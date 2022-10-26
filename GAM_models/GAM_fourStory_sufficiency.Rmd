@@ -1,0 +1,167 @@
+---
+title: "GAM_intro"
+author: "Laxman Dahal"
+date: "1/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(mgcv)
+```
+
+```{r}
+#dat = read.csv('data/Inputs_for_s4_96x48_high_avg_EDP.csv', header = TRUE)
+dat = read.csv('data/Inputs_for_s4_96x48_veryhigh_avg_EDP.csv', header = TRUE)
+
+magnitude = read.table('data/Magnitude.txt', header=FALSE)
+Rjb = read.table('data/Distance_Rjb.txt', header = FALSE)
+columns = colnames(dat)
+head(dat)
+```
+
+
+```{r}
+ln_sdrX = as.matrix(log(dat['story_1_sdrX']))
+ln_pfaX = as.matrix(log(dat['story_1_pfaX']))
+
+
+######## The list of IMs used ##############
+lnsaT1 = as.matrix(log(dat['SaT1']))
+lnPGA = log(as.matrix(dat['PGA']))
+lnPGV = log(as.matrix(dat['PGV']))
+lnsaAvg = log(as.matrix(dat['Sa_avg']))
+lnCAV = log(as.matrix(dat['CAV']))
+lnSI = log(as.matrix(dat['SI']))
+lnASI = log(as.matrix(dat['ASI']))
+lnDSI = log(as.matrix(dat['DSI']))
+lnDS_5to75 = log(as.matrix(dat['DS_5to75']))
+lnDS_5to95 = log(as.matrix(dat['DS_5to75']))
+
+
+magnitude = as.matrix(magnitude)
+Rjb = as.matrix(log(Rjb))
+
+```
+
+
+```{r}
+lnIM = lnSI
+
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_3_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_3_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_3_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_3_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_4_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_4_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) , 
+                as.matrix(log(dat['story_4_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6),
+                as.matrix(log(dat['story_4_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6)
+                ),
+                family = mvn(d = 16))
+summary(fit)
+```
+
+
+```{r}
+lnIM = lnSI
+
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6), 
+                as.matrix(log(dat['story_4_pfaX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_pfaZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6)
+                ),
+                family = mvn(d = 16))
+summary(fit)
+```
+
+
+```{r}
+resid_gam = residuals.gam(fit)
+sd(resid_gam[,1])
+```
+```{r}
+sd(fitted.values(fit)[,1])
+```
+
+
+```{r}
+#anova.gam(fit)
+max(dat['story_1_sdrX'], dat['story_1_sdrZ'])
+```
+
+```{r}
+#
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fit$family$data$R))
+
+```
+```{r}
+sqrt(diag(cov))
+```
+
+```{r}
+std = sqrt(diag(cov))
+
+sdr_std = std[c(TRUE, TRUE, FALSE, FALSE)]
+pfa_std = std[c(FALSE, FALSE, TRUE, TRUE)]
+```
+
+```{r}
+mean(sdr_std)
+mean(pfa_std)
+```
+
+
+
+```{r}
+# correlation matrix between SDR and PFA
+cov2cor(cov)
+```
+
+
+```{r}
+#coef(fit)
+```
+
+
+```{r}
+fit$family$data
+```
+
+
+```{r}
+plot(fit)
+```
+
+
+
+
+
+
+
+
+

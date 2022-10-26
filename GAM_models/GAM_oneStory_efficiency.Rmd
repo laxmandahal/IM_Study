@@ -1,0 +1,226 @@
+---
+title: "GAM_intro"
+author: "Laxman Dahal"
+date: "1/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(mgcv)
+library(MASS)
+```
+
+```{r}
+#dat = read.csv('data/Inputs_for_s1_48x32_high_avg_EDP.csv', header = TRUE)
+#dat = read.csv('data/Inputs_for_s1_48x32_veryhigh_avg_EDP.csv', header = TRUE)
+#dat = read.csv('data/Inputs_for_s1_96x48_high_avg_EDP.csv', header = TRUE)
+dat = read.csv('data/Inputs_for_s1_96x48_veryhigh_avg_EDP.csv', header = TRUE)
+
+magnitude = read.table('data/Magnitude.txt', header=FALSE)
+Rjb = read.table('data/Distance_Rjb.txt', header = FALSE)
+columns = colnames(dat)
+head(dat)
+```
+
+
+```{r}
+ln_sdrX = as.matrix(log(dat['story_1_sdrX']))
+ln_pfaX = as.matrix(log(dat['story_1_pfaX']))
+
+
+######## The list of IMs used ##############
+lnsaT1 = as.matrix(log(dat['SaT1']))
+lnPGA = log(as.matrix(dat['PGA']))
+lnPGV = log(as.matrix(dat['PGV']))
+lnsaAvg = log(as.matrix(dat['Sa_avg']))
+lnCAV = log(as.matrix(dat['CAV']))
+lnSI = log(as.matrix(dat['SI']))
+lnASI = log(as.matrix(dat['ASI']))
+lnDSI = log(as.matrix(dat['DSI']))
+lnDS_5to75 = log(as.matrix(dat['DS_5to75']))
+lnDS_5to95 = log(as.matrix(dat['DS_5to95']))
+
+
+magnitude = as.matrix(magnitude)
+Rjb = as.matrix(log(Rjb))
+
+```
+
+```{r}
+
+im_list = list(lnsaT1, lnPGA, lnPGV, lnsaAvg, lnCAV, lnSI, lnASI, lnDSI, lnDS_5to75, lnDS_5to95)
+sdr_eff = c()
+pfa_eff = c()
+entropy_eff = c()
+for (x in im_list) {
+  lnIM = x
+
+  fit <- gam(list(as.matrix(log(dat['story_1_sdrX']))  ~ s(lnIM, k=6) ,
+                  as.matrix(log(dat['story_1_sdrZ']))  ~ s(lnIM, k=6) ,
+                  as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k = 6),
+                  as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k = 6)
+                  ),
+                  family = mvn(d = 4))
+  #summary(fit)
+  # estimated cov matrix between SDR and PFA
+  cov <- solve(crossprod(fit$family$data$R))
+  std = sqrt(diag(cov))
+  
+  sdr_std = std[c(TRUE, TRUE, FALSE, FALSE)]
+  pfa_std = std[c(FALSE, FALSE, TRUE, TRUE)]
+  
+  sdr_eff = c(sdr_eff, c(mean(sdr_std)))
+  pfa_eff = c(pfa_eff, c(mean(pfa_std)))
+  entropy_eff = c(entropy_eff, c(0.5*log((2*pi*exp(1))^dim(cov)[1] * det(cov))))
+}
+#sdr_eff
+#pfa_eff
+entropy_eff
+write.matrix(entropy_eff, file='mat.csv')
+```
+
+
+
+
+```{r}
+lnIM = lnPGV
+
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX']))  ~ s(lnIM, k=6) ,
+                as.matrix(log(dat['story_1_sdrZ']))  ~ s(lnIM, k=6) ,
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k = 6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k = 6),
+                as.matrix(log(dat['story_2_sdrX']))  ~ s(lnIM, k=6) ,
+                as.matrix(log(dat['story_2_sdrZ']))  ~ s(lnIM, k=6) ,
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k = 6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k = 6)
+                ),
+                family = mvn(d = 8))
+#summary(fit)
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fit$family$data$R))
+std = sqrt(diag(cov))
+
+sdr_std = std[c(TRUE, TRUE, FALSE, FALSE)]
+pfa_std = std[c(FALSE, FALSE, TRUE, TRUE)]
+
+mean(sdr_std)
+mean(pfa_std)
+```
+
+```{r}
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fit$family$data$R))
+std = sqrt(diag(cov))
+
+sdr_std = std[c(TRUE, TRUE, FALSE, FALSE)]
+pfa_std = std[c(FALSE, FALSE, TRUE, TRUE)]
+
+mean(sdr_std)
+mean(pfa_std)
+```
+
+
+
+```{r}
+resid_gam = residuals.gam(fit)
+sd(resid_gam[,1])
+```
+
+
+```{r}
+fit_val_mat = fitted.values(fit)
+mu0 = colMeans(fit_val_mat)
+cov0 = solve(crossprod(fit$family$data$R))
+```
+
+```{r}
+#
+```
+
+
+```{r}
+fit_M <- gam(list(
+                as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6)
+                ),
+                family = mvn(d = 8))
+#summary(fit)
+fit_val_mat_M = fitted.values(fit_M)
+mu1 = colMeans(fit_val_mat_M)
+cov1 = solve(crossprod(fit_M$family$data$R))
+```
+
+```{r}
+library(MASS)
+length(mu0)
+iS1 = ginv(cov1)
+diff = mu1 - mu0
+tr_term = tr(iS1 %*% cov0)
+det_term = log(det(cov1) / det(cov0))
+quad_term = t(diff) %*% iS1 %*% diff
+```
+```{r}
+0.5 * (tr_term + det_term + quad_term - length(mu0))
+```
+
+
+```{r}
+library(psych)
+det(cov1)
+```
+
+
+
+
+
+
+```{r}
+mu0
+```
+
+```{r}
+mu1
+```
+
+
+
+
+```{r}
+# correlation matrix between SDR and PFA
+cov2cor(cov)
+```
+
+
+```{r}
+#coef(fit)
+```
+
+
+```{r}
+fit$family$data
+```
+
+
+```{r}
+plot(fit)
+```
+
+
+
+
+
+
+
+
+

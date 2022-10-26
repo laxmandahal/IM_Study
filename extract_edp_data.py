@@ -41,8 +41,8 @@ def extract_EDP_data(baseDir, BuildingList, buildingIndex, edp_type = 'SDR', pai
         if ((edp['GM_ID'].values[i]> numGM * start_index_multiplier) &
             (edp['GM_ID'].values[i]<= numGM * end_index_multiplier)):
             direction.append('X')
-        elif ((edp['GM_ID'].values[i] > 826 * end_index_multiplier) &
-              (edp['GM_ID'].values[i] <= 826 * (end_index_multiplier + 1))):
+        elif ((edp['GM_ID'].values[i] > numGM * end_index_multiplier) &
+              (edp['GM_ID'].values[i] <= numGM * (end_index_multiplier + 1))):
             direction.append('Z')
         else:
             pass
