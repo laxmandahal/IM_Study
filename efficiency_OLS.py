@@ -18,6 +18,9 @@ from scipy.stats import pearsonr
 import statsmodels.api as sm 
 import statsmodels.formula.api as smf
 
+from utility_functions import compute_RotDxx_EDP
+
+
 class OLS:
     def __init__(self, EDP, IM):
         self.EDP = EDP
@@ -61,7 +64,11 @@ class OLS:
             
     def qqplot(self):
         sm.qqplot(self.result.resid, line = 's')
-
+    
+    def get_pred_values(self):
+        return self.result.get_prediction().predicted_mean
+    def get_residual(self):
+        return self.result.resid
 
     def fitplot(self):
         sm.graphics.plot_fit(self.result, 1, vlines = False);
@@ -80,7 +87,7 @@ class OLS:
         plt.plot(X_ref, Y_ref, color = 'red', linewidth = 1.3)
         plt.show()
 
-def SummaryResutls_efficiency(buildingIndex, df_IMs, IMs=['SaT1', 'PGA', 'PGV', 'Sa_avg'],
+def SummaryResutls_efficiency(baseDir, BuildingList, buildingIndex, df_IMs, IMs=['SaT1', 'PGA', 'PGV', 'Sa_avg'],
                               pairingID = 1, average_EDP = False, rotate_EDP = False):
     '''
     pairingID: if 1, GM_h1 applied in X-direction, GM_h2 applied in Y-direction
@@ -93,6 +100,8 @@ def SummaryResutls_efficiency(buildingIndex, df_IMs, IMs=['SaT1', 'PGA', 'PGV', 
     df_IMs = gminfo_h1 can only be used with pairing ID 1
     df_IMs = gminfo_h2 can only be used with pairing ID 2
     '''
+    numGM = len(df_IMs)
+    T = np.array([0.13, 0.12, 0.16, 0.15, 0.22, 0.22, 0.26, 0.25, 0.49, 0.49])
     dataDir = os.path.join(baseDir, *['Results', 'IM_study_826GMs', BuildingList[buildingIndex]])
     os.chdir(dataDir)
     sdr = pd.read_csv('SDR.csv', header = None)
@@ -171,3 +180,40 @@ def SummaryResutls_efficiency(buildingIndex, df_IMs, IMs=['SaT1', 'PGA', 'PGV', 
         tempdf.append(df)
 
     return pd.concat(tempdf)
+
+
+def portfolio_mean_efficiency(baseDir, BuildingList, df_IMs, IM, pairingID = 1, average_EDP = True, Uni_Direction = False):
+    
+#     buildingName = ['IM', 'SFD1B', 'SFD3B', 'SFD2B', 'SFD4B', 'MFD1B', 'MFD4B', 'MFD2B', 'MFD5B', 'MFD3B', 'MFD6B']
+    buildingName = ['IM', 'SFD1B', 'SFD3B', 'MFD1B', 'MFD4B', 'SFD2B', 'SFD4B', 'MFD2B', 'MFD5B', 'MFD3B', 'MFD6B']
+    avg_sdr_eff = pd.DataFrame(data = [], columns=buildingName)
+    avg_sdr_eff = avg_sdr_eff.set_index('IM')
+    
+    avg_pfa_eff = pd.DataFrame(data = [], columns=buildingName)
+    avg_pfa_eff = avg_pfa_eff.set_index('IM')
+    
+    for buildingIndex in range(len(BuildingList)):
+        numStory = int(BuildingList[buildingIndex].split('_')[0][1])
+        floor = np.arange(1, numStory + 1)
+        summaryResult = SummaryResutls_efficiency(baseDir, BuildingList, buildingIndex, df_IMs, IM, pairingID = pairingID,
+                                              average_EDP=average_EDP, rotate_EDP=Uni_Direction)
+        for i in range(len(IM)):
+            if Uni_Direction:
+                avg_sdr_eff.loc['%s'%IM[i], buildingName[buildingIndex + 1]] = np.mean(summaryResult.loc['%s'%IM[i]][::2].values)
+                avg_pfa_eff.loc['%s'%IM[i], buildingName[buildingIndex + 1]] = np.mean(summaryResult.loc['%s'%IM[i]][1::2].values)
+            else:
+                tempSDR = np.concatenate((summaryResult.loc['%s'%IM[i]][::4].values, summaryResult.loc['%s'%IM[i]][1::4].values))
+                tempPFA = np.concatenate((summaryResult.loc['%s'%IM[i]][2::4].values, summaryResult.loc['%s'%IM[i]][3::4].values))
+                avg_sdr_eff.loc['%s'%IM[i], buildingName[buildingIndex + 1]] = np.mean(tempSDR)
+                avg_pfa_eff.loc['%s'%IM[i], buildingName[buildingIndex + 1]] = np.mean(tempPFA)
+    
+    avg_sdr_eff['mean'] = avg_sdr_eff.mean(axis=1)
+    avg_sdr_eff['meanSFD'] = avg_sdr_eff.loc[:,['SFD1B', 'SFD2B', 'SFD3B', 'SFD4B']].mean(axis=1)
+    avg_sdr_eff['meanMFD'] = avg_sdr_eff.loc[:,['MFD1B', 'MFD2B', 'MFD3B', 'MFD4B', 'MFD5B', 'MFD6B']].mean(axis=1)
+
+
+    avg_pfa_eff['mean'] = avg_pfa_eff.mean(axis=1)
+    avg_pfa_eff['meanSFD'] = avg_pfa_eff.loc[:,['SFD1B', 'SFD2B', 'SFD3B', 'SFD4B']].mean(axis=1)
+    avg_pfa_eff['meanMFD'] = avg_pfa_eff.loc[:,['MFD1B', 'MFD2B', 'MFD3B', 'MFD4B', 'MFD5B', 'MFD6B']].mean(axis=1)
+    
+    return avg_sdr_eff, avg_pfa_eff
