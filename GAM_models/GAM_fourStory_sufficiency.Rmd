@@ -50,7 +50,7 @@ Rjb = as.matrix(log(Rjb))
 
 
 ```{r}
-lnIM = lnSI
+lnIM = lnPGV
 
 fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
                 as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) ,
@@ -75,7 +75,7 @@ summary(fit)
 
 
 ```{r}
-lnIM = lnSI
+lnIM = lnPGA
 
 fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
                 as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(Rjb, k=6),
