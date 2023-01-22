@@ -18,7 +18,7 @@ library(mgcv)
 
 ```{r}
 #dat = read.csv('Inputs_for_s4_96x48_veryhigh_pID1.csv', header = TRUE)
-dat = read.csv('Inputs_for_s4_96x48_veryhigh_avg_EDP.csv', header = TRUE)
+dat = read.csv('data/Inputs_for_s4_96x48_veryhigh_avg_EDP.csv', header = TRUE)
 magnitude = read.table('data/Magnitude.txt', header=FALSE)
 Rjb = read.table('data/Distance_Rjb.txt', header = FALSE)
 columns = colnames(dat)
@@ -53,24 +53,25 @@ Rjb = as.matrix(log(Rjb))
 ```
 
 ```{r}
+magnitude = as.matrix(log(magnitude))
 lnIM = lnsaAvg
 
-fit <- gam(list(as.matrix(log(dat['story_1_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_1_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_2_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_2_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_3_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_3_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_3_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_3_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_4_sdrX']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
-                as.matrix(log(dat['story_4_sdrZ']))  ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6), 
-                as.matrix(log(dat['story_4_pfaX'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6),
-                as.matrix(log(dat['story_4_pfaZ'])) ~ s(lnIM, k = 6) + s(magnitude, k=6) + s(Rjb,k=6)
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6), 
+                as.matrix(log(dat['story_4_pfaX'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6),
+                as.matrix(log(dat['story_4_pfaZ'])) ~ s(lnIM, k=6) + s(magnitude, k=6) + s(Rjb, k=6)
                 ),
                 family = mvn(d = 16))
 summary(fit)
@@ -144,6 +145,30 @@ coef(fit)
 fit$family$data
 ```
 
+```{r}
+magnitude = as.matrix(log(magnitude))
+lnIM = lnsaAvg
+
+fit <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_3_sdrZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_3_pfaZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_4_sdrZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6), 
+                as.matrix(log(dat['story_4_pfaX'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6),
+                as.matrix(log(dat['story_4_pfaZ'])) ~ s(lnIM, magnitude, k=6) + s(lnIM, Rjb, k=6)
+                ),
+                family = mvn(d = 16))
+summary(fit)
+```
 
 
 
