@@ -17,7 +17,7 @@ library(mgcv)
 
 ```{r}
 #dat = read.csv('Inputs_for_s4_96x48_veryhigh_pID1.csv', header = TRUE)
-dat = read.csv('Inputs_for_s2_48x32_high_avg_EDP.csv', header = TRUE)
+dat = read.csv('data/Inputs_for_s2_48x32_high_avg_EDP.csv', header = TRUE)
 magnitude = read.table('data/Magnitude.txt', header=FALSE)
 Rjb = read.table('data/Distance_Rjb.txt', header = FALSE)
 columns = colnames(dat)
@@ -132,11 +132,55 @@ cov2cor(cov)
 
 
 ```{r}
-fit$family$data
+fitnew <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, magnitude, Rjb, k=5),
+                   as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, magnitude, Rjb, k=5)
+                ),
+                family = mvn(d = 8))
+summary(fitnew)
+```
+
+```{r}
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fitnew$family$data$R))
+# correlation matrix between SDR and PFA
+cov2cor(cov)
+```
+
+```{r}
+plot(fitnew)
+```
+
+```{r}
+fitnew <- gam(list(as.matrix(log(dat['story_1_sdrX'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_1_sdrZ'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_1_pfaX'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_1_pfaZ'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_2_sdrX'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_2_sdrZ'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_2_pfaX'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5),
+                   as.matrix(log(dat['story_2_pfaZ'])) ~ s(lnIM, magnitude, k=5) + s(lnIM, Rjb, k=5)
+                ),
+                family = mvn(d = 8))
+summary(fitnew)
+```
+
+```{r}
+# estimated cov matrix between SDR and PFA
+cov <- solve(crossprod(fitnew$family$data$R))
+# correlation matrix between SDR and PFA
+cov2cor(cov)
 ```
 
 
-
+```{r}
+plot(fitnew)
+```
 
 ```{r}
 N <- 200

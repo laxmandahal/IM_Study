@@ -1,0 +1,294 @@
+pelicun
+
+2023-03-21T12:05:50:074 -----------------------------------------------------------
+2023-03-21T12:05:50:074 Assessement Started
+2023-03-21T12:05:50:074 -----------------------------------------------------------
+2023-03-21T12:05:50:074 type: FEMA P58 Assessment
+2023-03-21T12:05:50:074 hazard: EQ
+2023-03-21T12:05:50:074 -----------------------------------------------------------
+2023-03-21T12:05:50:074 -----------------------------------------------------------
+2023-03-21T12:05:50:074 Reading inputs...
+2023-03-21T12:05:50:074 	BIM file...
+2023-03-21T12:05:50:075 		Opening the configuration file...
+2023-03-21T12:05:50:075 		Loading the Models:
+2023-03-21T12:05:50:075 			Response Model
+2023-03-21T12:05:50:075 			Damage Model
+2023-03-21T12:05:50:075 			Loss Model
+2023-03-21T12:05:50:075 			Performance Model
+2023-03-21T12:05:50:075 
+2023-03-21T12:05:50:075 		Global attributes / settings:
+2023-03-21T12:05:50:075 			stories: 1
+2023-03-21T12:05:50:075 			coupled_assessment: False
+2023-03-21T12:05:50:075 			realizations: 1000
+2023-03-21T12:05:50:076 
+2023-03-21T12:05:50:076 		Prescribed Decision Variables:
+2023-03-21T12:05:50:076 			injuries
+2023-03-21T12:05:50:076 			rec_cost
+2023-03-21T12:05:50:076 			rec_time
+2023-03-21T12:05:50:076 			red_tag
+2023-03-21T12:05:50:076 
+2023-03-21T12:05:50:076 		Damage and Loss Data Dir:
+2023-03-21T12:05:50:076 			/Users/laxmandahal/Desktop/UCLA/Phd/Research/SurrogateModeling/DGP/woodSDA/Codes/Loss_Pelicun/FEMA_P58_Fragility_Database_2ed
+2023-03-21T12:05:50:076 
+2023-03-21T12:05:50:076 		Population Data Dir:
+2023-03-21T12:05:50:076 			/Users/laxmandahal/Desktop/UCLA/Phd/Research/SurrogateModeling/DGP/woodSDA/Codes/Loss_Pelicun/pelicun_2_6/resources/FEMA_P58_2nd_ed.hdf
+2023-03-21T12:05:50:076 
+2023-03-21T12:05:50:076 		Units:
+2023-03-21T12:05:50:076 			force: kip (4448.217986799999)
+2023-03-21T12:05:50:076 			length: ft (0.30479999999999996)
+2023-03-21T12:05:50:076 			temperature: C (1.0)
+2023-03-21T12:05:50:076 			acceleration: g (9.80665)
+2023-03-21T12:05:50:076 			time: sec (1.0)
+2023-03-21T12:05:50:076 			area: ft2 (0.09290303999999998)
+2023-03-21T12:05:50:076 			volume: ft3 (0.02831684659199999)
+2023-03-21T12:05:50:076 			speed: ftps (0.30479999999999996)
+2023-03-21T12:05:50:076 
+2023-03-21T12:05:50:076 		Response Model:
+2023-03-21T12:05:50:076 			Detection Limits:
+2023-03-21T12:05:50:076 				PID: 0.1
+2023-03-21T12:05:50:076 				PFA: None
+2023-03-21T12:05:50:076 				PRD: None
+2023-03-21T12:05:50:076 				PGV: None
+2023-03-21T12:05:50:077 				RID: None
+2023-03-21T12:05:50:077 				PMD: None
+2023-03-21T12:05:50:077 				PGA: None
+2023-03-21T12:05:50:077 				SA: None
+2023-03-21T12:05:50:077 				SV: None
+2023-03-21T12:05:50:077 				SD: None
+2023-03-21T12:05:50:077 				RDR: None
+2023-03-21T12:05:50:077 				DWD: None
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 			EDP_distribution: lognormal
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 			EDP_dist_basis: all results
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 			coll_prob: estimated
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 			CP_est_basis: sampled EDP
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 			Additional Uncertainty:
+2023-03-21T12:05:50:077 				beta_gm: None
+2023-03-21T12:05:50:077 				beta_m: None
+2023-03-21T12:05:50:077 
+2023-03-21T12:05:50:077 		Performance Model:
+2023-03-21T12:05:50:077 				loc	dir	qnt	dist	cov	cgw
+2023-03-21T12:05:50:077 		B1071.002 [ft2]:
+2023-03-21T12:05:50:077 		B1071.041 [ft]:
+2023-03-21T12:05:50:077 		B2011.111 [ft2]:
+2023-03-21T12:05:50:077 		C1011.011a [ft]:
+2023-03-21T12:05:50:077 		C1011.001a [ft]:
+2023-03-21T12:05:50:077 		D2021.013a [ft]:
+2023-03-21T12:05:50:077 		D2021.013b [ft]:
+2023-03-21T12:05:50:077 		D2021.023a [ft]:
+2023-03-21T12:05:50:078 		D2021.023b [ft]:
+2023-03-21T12:05:50:078 		D2031.013b [ft]:
+2023-03-21T12:05:50:078 		D3031.013a [ea]:
+2023-03-21T12:05:50:078 		D3041.011c [ft]:
+2023-03-21T12:05:50:078 		D3041.032c [ea]:
+2023-03-21T12:05:50:078 		D3041.102b [ea]:
+2023-03-21T12:05:50:078 		D3041.103a [ea]:
+2023-03-21T12:05:50:078 
+2023-03-21T12:05:50:078 		Damage Model:
+2023-03-21T12:05:50:078 			Collapse Limits:
+2023-03-21T12:05:50:078 				PID: 0.2
+2023-03-21T12:05:50:078 				PRD: None
+2023-03-21T12:05:50:078 				PFA: None
+2023-03-21T12:05:50:078 				PGV: None
+2023-03-21T12:05:50:078 				RID: None
+2023-03-21T12:05:50:078 				PMD: None
+2023-03-21T12:05:50:078 				PGA: None
+2023-03-21T12:05:50:078 				SA: None
+2023-03-21T12:05:50:078 				SV: None
+2023-03-21T12:05:50:078 				SD: None
+2023-03-21T12:05:50:078 				RDR: None
+2023-03-21T12:05:50:078 				DWD: None
+2023-03-21T12:05:50:078 
+2023-03-21T12:05:50:078 			Irreparable Residual Drift:
+2023-03-21T12:05:50:078 				Median: 10.0
+2023-03-21T12:05:50:078 				Beta: 0.0001
+2023-03-21T12:05:50:078 
+2023-03-21T12:05:50:079 			Collapse Probability:
+2023-03-21T12:05:50:079 				Estimated based on sampled EDP
+2023-03-21T12:05:50:079 
+2023-03-21T12:05:50:079 		Loss Model:
+2023-03-21T12:05:50:079 			replacement_cost: 50000000.0
+2023-03-21T12:05:50:079 			replacement_time: 540.0
+2023-03-21T12:05:50:079 			population: [10.0, 10.0]
+2023-03-21T12:05:50:079 
+2023-03-21T12:05:50:079 		Collapse Modes:
+2023-03-21T12:05:50:079 			complete
+2023-03-21T12:05:50:079 			  w: 1.0
+2023-03-21T12:05:50:079 			  injuries: [0.1, 0.9]
+2023-03-21T12:05:50:079 			  affected_area: [1.0]
+2023-03-21T12:05:50:079 
+2023-03-21T12:05:50:079 		Dependencies:
+2023-03-21T12:05:50:079 			quantities: IND
+2023-03-21T12:05:50:079 			fragilities: ATC
+2023-03-21T12:05:50:079 			injuries: IND
+2023-03-21T12:05:50:079 			rec_costs: IND
+2023-03-21T12:05:50:079 			rec_times: IND
+2023-03-21T12:05:50:079 			red_tags: IND
+2023-03-21T12:05:50:079 			cost_and_time: False
+2023-03-21T12:05:50:079 			injury_lvls: False
+2023-03-21T12:05:50:079 	EDP file...
+2023-03-21T12:05:50:079 		Opening the input file...
+2023-03-21T12:05:50:081 		EDP types:
+2023-03-21T12:05:50:081 			PID
+2023-03-21T12:05:50:081 			PFA
+2023-03-21T12:05:50:081 			RID
+2023-03-21T12:05:50:081 
+2023-03-21T12:05:50:081 		number of samples: 50
+2023-03-21T12:05:50:081 	Damage and Loss data files...
+2023-03-21T12:05:50:085 		Available Fragility Groups:
+2023-03-21T12:05:50:085 			B1071.002 demand:PID PGs: 2
+2023-03-21T12:05:50:085 			B1071.041 demand:PID PGs: 2
+2023-03-21T12:05:50:085 			B2011.111 demand:PID PGs: 2
+2023-03-21T12:05:50:085 			C1011.011a demand:PID PGs: 2
+2023-03-21T12:05:50:085 			C1011.001a demand:PID PGs: 2
+2023-03-21T12:05:50:085 			D2021.013a demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D2021.013b demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D2021.023a demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D2021.023b demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D2031.013b demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D3031.013a demand:PFA PGs: 1
+2023-03-21T12:05:50:085 			D3041.011c demand:PFA PGs: 2
+2023-03-21T12:05:50:085 			D3041.032c demand:PFA PGs: 1
+2023-03-21T12:05:50:085 			D3041.102b demand:PFA PGs: 1
+2023-03-21T12:05:50:085 			D3041.103a demand:PFA PGs: 1
+2023-03-21T12:05:50:085 	Population data files...
+2023-03-21T12:05:50:114 -----------------------------------------------------------
+2023-03-21T12:05:50:114 Defining random variables...
+2023-03-21T12:05:50:114 	Quantities...
+2023-03-21T12:05:50:115 		RV dimensions: 16
+2023-03-21T12:05:50:115 	Damage State Limits...
+2023-03-21T12:05:50:115 		RV dimensions:
+2023-03-21T12:05:50:115 			B1071.002: 6
+2023-03-21T12:05:50:115 			B1071.041: 6
+2023-03-21T12:05:50:115 			B2011.111: 6
+2023-03-21T12:05:50:116 			C1011.001a: 6
+2023-03-21T12:05:50:116 			C1011.011a: 4
+2023-03-21T12:05:50:116 			D2021.013a: 4
+2023-03-21T12:05:50:116 			D2021.013b: 2
+2023-03-21T12:05:50:116 			D2021.023a: 4
+2023-03-21T12:05:50:117 			D2021.023b: 4
+2023-03-21T12:05:50:117 			D2031.013b: 2
+2023-03-21T12:05:50:117 			D3031.013a: 1
+2023-03-21T12:05:50:117 			D3041.011c: 4
+2023-03-21T12:05:50:117 			D3041.032c: 1
+2023-03-21T12:05:50:117 			D3041.102b: 1
+2023-03-21T12:05:50:117 			D3041.103a: 1
+2023-03-21T12:05:50:118 	Damage States...
+2023-03-21T12:05:50:118 		RV dimensions: 4
+2023-03-21T12:05:50:118 	Red Tag Thresholds...
+2023-03-21T12:05:50:119 		RV dimensions: 8
+2023-03-21T12:05:50:119 	Reconstruction Costs and Times...
+2023-03-21T12:05:50:122 		RV dimensions: 112
+2023-03-21T12:05:50:122 	Injury Probabilities...
+2023-03-21T12:05:50:124 		RV dimensions: 3
+2023-03-21T12:05:50:124 	EDPs...
+2023-03-21T12:05:50:124 		0 considered collapsed out of 50 raw samples
+2023-03-21T12:05:50:124 		0 are beyond the detection limits out of 50 non-collapse samples
+2023-03-21T12:05:50:125 		Number of EDP dimensions: 8
+2023-03-21T12:05:50:125 		Fitting a multivariate lognormal distribution to EDP samples...
+2023-03-21T12:05:50:975 
+2023-03-21T12:05:50:976 Sampling the random variables...
+2023-03-21T12:05:51:038 Sampling completed.
+2023-03-21T12:05:51:039 -----------------------------------------------------------
+2023-03-21T12:05:51:039 Creating the damage and loss model...
+2023-03-21T12:05:51:039 	B1071.002...
+2023-03-21T12:05:51:039 	B1071.041...
+2023-03-21T12:05:51:039 	B2011.111...
+2023-03-21T12:05:51:039 	C1011.001a...
+2023-03-21T12:05:51:039 	C1011.011a...
+2023-03-21T12:05:51:039 	D2021.013a...
+2023-03-21T12:05:51:039 	D2021.013b...
+2023-03-21T12:05:51:039 	D2021.023a...
+2023-03-21T12:05:51:039 	D2021.023b...
+2023-03-21T12:05:51:040 	D2031.013b...
+2023-03-21T12:05:51:040 	D3031.013a...
+2023-03-21T12:05:51:040 	D3041.011c...
+2023-03-21T12:05:51:040 	D3041.032c...
+2023-03-21T12:05:51:040 	D3041.102b...
+2023-03-21T12:05:51:040 	D3041.103a...
+2023-03-21T12:05:51:040 -----------------------------------------------------------
+2023-03-21T12:05:51:040 Calculating damage...
+2023-03-21T12:05:51:040 	Sampling event time...
+2023-03-21T12:05:51:041 	Sampling the population...
+2023-03-21T12:05:51:045 	Calculating the number of collapses...
+2023-03-21T12:05:51:045 		0 out of 1000 collapsed.
+2023-03-21T12:05:51:045 	Calculating the damage in the non-collapsed cases...
+2023-03-21T12:05:51:046 		B1071.002...
+2023-03-21T12:05:51:056 		B1071.041...
+2023-03-21T12:05:51:067 		B2011.111...
+2023-03-21T12:05:51:078 		C1011.001a...
+2023-03-21T12:05:51:088 		C1011.011a...
+2023-03-21T12:05:51:098 		D2021.013a...
+2023-03-21T12:05:51:107 		D2021.013b...
+2023-03-21T12:05:51:114 		D2021.023a...
+2023-03-21T12:05:51:123 		D2021.023b...
+2023-03-21T12:05:51:133 		D2031.013b...
+2023-03-21T12:05:51:140 		D3031.013a...
+2023-03-21T12:05:51:144 		D3041.011c...
+2023-03-21T12:05:51:154 		D3041.032c...
+2023-03-21T12:05:51:158 		D3041.102b...
+2023-03-21T12:05:51:162 		D3041.103a...
+2023-03-21T12:05:51:168 -----------------------------------------------------------
+2023-03-21T12:05:51:168 Calculating losses...
+2023-03-21T12:05:51:168 	Assigning Red Tags...
+2023-03-21T12:05:51:224 	Identifying Irreparable Cases...
+2023-03-21T12:05:51:225 		0 out of 1000 non-collapsed cases are irreparable.
+2023-03-21T12:05:51:225 	Calculating Reconstruction cost and time...
+2023-03-21T12:05:51:410 	Calculating Injuries in Collapsed Cases...
+2023-03-21T12:05:51:410 	Calculating Injuries in Non-Collapsed Cases...
+2023-03-21T12:05:51:423 -----------------------------------------------------------
+2023-03-21T12:05:51:423 Aggregating results...
+2023-03-21T12:05:51:431 -----------------------------------------------------------
+2023-03-21T12:05:51:431 Saving outputs...
+2023-03-21T12:05:51:431 	Converting EDP samples to input units...
+2023-03-21T12:05:51:433 	Converting damaged quantities to input units...
+2023-03-21T12:05:51:475 	Replacing headers with FG names...
+2023-03-21T12:05:51:479 	Saving files:
+2023-03-21T12:05:51:479 		Summary
+2023-03-21T12:05:51:479 			Saving file DL_summary.csv
+2023-03-21T12:05:51:485 		Summary statistics
+2023-03-21T12:05:51:487 			Saving file DL_summary_stats.csv
+2023-03-21T12:05:51:488 		EDP values
+2023-03-21T12:05:51:488 			Saving file EDP_.csv
+2023-03-21T12:05:51:499 		EDP statistics
+2023-03-21T12:05:51:500 			Saving file EDP_stats.csv
+2023-03-21T12:05:51:501 		Damaged quantities
+2023-03-21T12:05:51:501 			Saving file DMG.csv
+2023-03-21T12:05:51:526 		Damage statistics
+2023-03-21T12:05:51:530 			Saving file DMG_stats.csv
+2023-03-21T12:05:51:531 		Damaged quantities - aggregated
+2023-03-21T12:05:51:532 			Saving file DMG_agg.csv
+2023-03-21T12:05:51:539 		Decision variable DV_red_tag
+2023-03-21T12:05:51:539 			Saving file DV_red_tag.csv
+2023-03-21T12:05:51:542 		Decision variable DV_red_tag - aggregated
+2023-03-21T12:05:51:542 			Saving file DV_red_tag_agg.csv
+2023-03-21T12:05:51:543 		Aggregated statistics for DV_red_tag
+2023-03-21T12:05:51:544 			Saving file DV_red_tag_agg_stats.csv
+2023-03-21T12:05:51:544 		Decision variable DV_rec_cost
+2023-03-21T12:05:51:544 			Saving file DV_rec_cost.csv
+2023-03-21T12:05:51:569 		Decision variable DV_rec_cost - aggregated
+2023-03-21T12:05:51:569 			Saving file DV_rec_cost_agg.csv
+2023-03-21T12:05:51:575 		Aggregated statistics for DV_rec_cost
+2023-03-21T12:05:51:577 			Saving file DV_rec_cost_agg_stats.csv
+2023-03-21T12:05:51:578 		Decision variable DV_rec_time
+2023-03-21T12:05:51:578 			Saving file DV_rec_time.csv
+2023-03-21T12:05:51:602 		Decision variable DV_rec_time - aggregated
+2023-03-21T12:05:51:602 			Saving file DV_rec_time_agg.csv
+2023-03-21T12:05:51:608 		Aggregated statistics for DV_rec_time
+2023-03-21T12:05:51:610 			Saving file DV_rec_time_agg_stats.csv
+2023-03-21T12:05:51:611 		Decision variable DV_injuries_1
+2023-03-21T12:05:51:611 			Saving file DV_injuries_1.csv
+2023-03-21T12:05:51:613 		Decision variable DV_injuries_1 - aggregated
+2023-03-21T12:05:51:613 			Saving file DV_injuries_1_agg.csv
+2023-03-21T12:05:51:614 		Aggregated statistics for DV_injuries_1
+2023-03-21T12:05:51:614 			Saving file DV_injuries_1_agg_stats.csv
+2023-03-21T12:05:51:615 		Decision variable DV_injuries_2
+2023-03-21T12:05:51:615 			Saving file DV_injuries_2.csv
+2023-03-21T12:05:51:617 		Decision variable DV_injuries_2 - aggregated
+2023-03-21T12:05:51:617 			Saving file DV_injuries_2_agg.csv
+2023-03-21T12:05:51:618 		Aggregated statistics for DV_injuries_2
+2023-03-21T12:05:51:618 			Saving file DV_injuries_2_agg_stats.csv
