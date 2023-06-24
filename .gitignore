@@ -1,7 +1,12 @@
-.DS_Store
-.RData
-.Rhistory
+**/.DS_Store
+*.RData
+*.Rhistory
 __pycache__
 .ipynb_checkpoints
 *.png
 *.csv
+*.xlxm
+*.xlsx
+/data/**
+/GAM_models/data/**
+/GAM_models/Summary_results/**
